@@ -1,15 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import {
   FaUsers,
   FaUserMd,
   FaCalendarCheck,
-  FaChartLine,
   FaArrowUp,
   FaArrowDown,
 } from 'react-icons/fa';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import AdminLayout from '../../components/Admin/AdminLayout';
 import './AdminPages.css';
 

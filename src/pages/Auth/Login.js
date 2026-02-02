@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaLock, FaHeartbeat } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
-import { authAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 import './Auth.css';
 
