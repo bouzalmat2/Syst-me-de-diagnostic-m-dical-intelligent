@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -24,8 +24,83 @@ const AuthSlider = () => {
     confirmPassword: '',
     role: 'patient'
   });
+  const [mousePosition, setMousePosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const [bloodCells, setBloodCells] = useState([]);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  // Initialize blood cells
+  useEffect(() => {
+    const cells = Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: 15 + Math.random() * 15,
+      speed: 0.5 + Math.random() * 1.5,
+    }));
+    setBloodCells(cells);
+  }, []);
+
+  // Mouse tracking
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Animate blood cells
+  useEffect(() => {
+    let animationFrameId;
+    
+    const animate = () => {
+      setBloodCells(prevCells =>
+        prevCells.map(cell => {
+          // Calculate direction towards mouse
+          const dx = mousePosition.x - cell.x;
+          const dy = mousePosition.y - cell.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          // Add autonomous movement
+          const time = Date.now() * 0.001;
+          const autonomousX = Math.sin(time + cell.id) * 1.5;
+          const autonomousY = Math.cos(time + cell.id) * 1.5;
+
+          // Always move towards mouse slowly
+          let newX = cell.x;
+          let newY = cell.y;
+
+          if (distance > 10) {
+            // Move towards mouse
+            newX += (dx / distance) * cell.speed + autonomousX;
+            newY += (dy / distance) * cell.speed + autonomousY;
+          } else {
+            // When close to mouse, just do autonomous movement
+            newX += autonomousX * 2;
+            newY += autonomousY * 2;
+          }
+
+          // Keep within bounds with padding
+          newX = Math.max(20, Math.min(window.innerWidth - 20, newX));
+          newY = Math.max(20, Math.min(window.innerHeight - 20, newY));
+
+          return { ...cell, x: newX, y: newY };
+        })
+      );
+      
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [mousePosition]);
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -87,6 +162,23 @@ const AuthSlider = () => {
 
   return (
     <div className="auth-slider-page">
+      {/* Blood Cells Animation */}
+      {bloodCells.map((cell) => (
+        <div
+          key={cell.id}
+          className="blood-cell"
+          style={{
+            left: `${cell.x}px`,
+            top: `${cell.y}px`,
+            width: `${cell.size}px`,
+            height: `${cell.size}px`,
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <div className="blood-cell-inner"></div>
+        </div>
+      ))}
+
       {/* Return Button */}
       <motion.button
         className="return-btn"

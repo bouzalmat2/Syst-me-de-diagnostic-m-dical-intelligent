@@ -19,11 +19,72 @@
   background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
   background-size: 50px 50px;
   animation: moveBackground 20s linear infinite;
+  pointer-events: none;
 }
 
 @keyframes moveBackground {
   0% { transform: translate(0, 0); }
   100% { transform: translate(50px, 50px); }
+}
+
+/* Blood Cells */
+.blood-cell {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(0.5px);
+  transition: left 0.1s linear, top 0.1s linear;
+  will-change: left, top;
+}
+
+.blood-cell-inner {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, #ff6b6b, #ee5a6f, #c92a2a);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 10px rgba(255, 107, 107, 0.4),
+    inset -3px -3px 6px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+  animation: float 6s ease-in-out infinite, pulse-cell 3s ease-in-out infinite;
+}
+
+.blood-cell:nth-child(odd) .blood-cell-inner {
+  animation-delay: -2s;
+}
+
+.blood-cell:nth-child(even) .blood-cell-inner {
+  animation-delay: -4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-20px) rotate(90deg) scale(0.9);
+  }
+  50% {
+    transform: translateY(0) rotate(180deg) scale(1.1);
+  }
+  75% {
+    transform: translateY(20px) rotate(270deg) scale(0.95);
+  }
+}
+
+@keyframes pulse-cell {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(255, 107, 107, 0.4),
+      inset -3px -3px 6px rgba(0, 0, 0, 0.2),
+      inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(255, 107, 107, 0.6),
+      inset -3px -3px 6px rgba(0, 0, 0, 0.2),
+      inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+  }
 }
 
 /* Return Button */
