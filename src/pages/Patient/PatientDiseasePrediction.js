@@ -143,7 +143,6 @@ const PatientDiseasePrediction = () => {
 
   // Navigate to Chatbot with Context
   const goToChatbot = (type) => {
-    const result = type === 'cancer' ? cancerResult : diseaseResult;
     const data = type === 'cancer' 
       ? { type: 'cancer', result: cancerResult }
       : { type: 'disease', data: diseaseData, result: diseaseResult };
