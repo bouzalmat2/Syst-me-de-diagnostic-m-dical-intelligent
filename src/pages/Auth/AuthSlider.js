@@ -1,0 +1,298 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  FaEnvelope, 
+  FaLock, 
+  FaUser, 
+  FaHeartbeat,
+  FaUserMd,
+  FaUserShield,
+  FaArrowLeft
+} from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
+import toast from 'react-hot-toast';
+import './AuthSlider.css';
+
+const AuthSlider = () => {
+  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [registerData, setRegisterData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    role: 'patient'
+  });
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    
+    // Demo login logic
+    const demoCredentials = {
+      'patient@test.com': 'patient',
+      'doctor@test.com': 'doctor',
+      'admin@test.com': 'admin'
+    };
+
+    const userRole = demoCredentials[loginData.email];
+    
+    if (userRole) {
+      login({
+        email: loginData.email,
+        name: userRole.charAt(0).toUpperCase() + userRole.slice(1),
+        role: userRole
+      });
+      toast.success('Login successful!');
+      navigate(`/${userRole}/dashboard`);
+    } else {
+      toast.error('Invalid credentials');
+    }
+  };
+
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    
+    if (registerData.password !== registerData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
+    if (registerData.password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+
+    login({
+      email: registerData.email,
+      name: registerData.name,
+      role: registerData.role
+    });
+    
+    toast.success('Registration successful!');
+    navigate(`/${registerData.role}/dashboard`);
+  };
+
+  const toggleMode = () => {
+    setIsLoginMode(!isLoginMode);
+  };
+
+  const roles = [
+    { value: 'patient', label: 'Patient', icon: FaHeartbeat, color: '#0066FF' },
+    { value: 'doctor', label: 'Doctor', icon: FaUserMd, color: '#10B981' },
+    { value: 'admin', label: 'Admin', icon: FaUserShield, color: '#FF3B3B' }
+  ];
+
+  return (
+    <div className="auth-slider-page">
+      {/* Return Button */}
+      <motion.button
+        className="return-btn"
+        onClick={() => navigate('/')}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <FaArrowLeft /> Back to Home
+      </motion.button>
+
+      <div className={`auth-slider-container ${!isLoginMode ? 'register-mode' : ''}`}>
+        {/* Forms Container */}
+        <div className="forms-container">
+          {/* Login Form */}
+          <motion.div
+            className="form-panel login-panel"
+            animate={{
+              x: isLoginMode ? 0 : '100%',
+              opacity: isLoginMode ? 1 : 0
+            }}
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
+          >
+            <form onSubmit={handleLoginSubmit} className="auth-form">
+              <h2>Welcome Back</h2>
+              <p className="form-subtitle">Login to your account</p>
+
+              <div className="input-group">
+                <FaEnvelope className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={loginData.email}
+                  onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <FaLock className="input-icon" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={loginData.password}
+                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="demo-credentials">
+                <p><strong>Demo Credentials:</strong></p>
+                <div className="demo-list">
+                  <span>patient@test.com</span>
+                  <span>doctor@test.com</span>
+                  <span>admin@test.com</span>
+                </div>
+              </div>
+
+              <button type="submit" className="submit-btn">
+                Sign In
+              </button>
+            </form>
+          </motion.div>
+
+          {/* Register Form */}
+          <motion.div
+            className="form-panel register-panel"
+            animate={{
+              x: isLoginMode ? '-100%' : 0,
+              opacity: isLoginMode ? 0 : 1
+            }}
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
+          >
+            <form onSubmit={handleRegisterSubmit} className="auth-form">
+              <h2>Create Account</h2>
+              <p className="form-subtitle">Sign up to get started</p>
+
+              <div className="input-group">
+                <FaUser className="input-icon" />
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={registerData.name}
+                  onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <FaEnvelope className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={registerData.email}
+                  onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <FaLock className="input-icon" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={registerData.password}
+                  onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <FaLock className="input-icon" />
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={registerData.confirmPassword}
+                  onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
+                  required
+                />
+              </div>
+
+              {/* Role Selection - Horizontal */}
+              <div className="role-selection-horizontal">
+                <p className="role-label">Select Your Role:</p>
+                <div className="roles-grid">
+                  {roles.map((role) => (
+                    <motion.label
+                      key={role.value}
+                      className={`role-card ${registerData.role === role.value ? 'selected' : ''}`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      style={{
+                        '--role-color': role.color
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="role"
+                        value={role.value}
+                        checked={registerData.role === role.value}
+                        onChange={(e) => setRegisterData({ ...registerData, role: e.target.value })}
+                      />
+                      <role.icon className="role-icon" />
+                      <span>{role.label}</span>
+                    </motion.label>
+                  ))}
+                </div>
+              </div>
+
+              <button type="submit" className="submit-btn">
+                Sign Up
+              </button>
+            </form>
+          </motion.div>
+        </div>
+
+        {/* Slider Overlay Panel */}
+        <motion.div
+          className="slider-panel"
+          animate={{
+            x: isLoginMode ? 0 : '100%'
+          }}
+          transition={{ duration: 0.6, ease: 'easeInOut' }}
+        >
+          <AnimatePresence mode="wait">
+            {isLoginMode ? (
+              <motion.div
+                key="login-overlay"
+                className="slider-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="slider-icon-wrapper">
+                  <FaHeartbeat className="slider-icon pulse-animation" />
+                </div>
+                <h2>New Here?</h2>
+                <p>Join our healthcare community and get access to premium medical services</p>
+                <button className="overlay-btn" onClick={toggleMode}>
+                  Sign Up
+                </button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="register-overlay"
+                className="slider-content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="slider-icon-wrapper">
+                  <FaHeartbeat className="slider-icon pulse-animation" />
+                </div>
+                <h2>Already a Member?</h2>
+                <p>Sign in to access your account and continue your healthcare journey</p>
+                <button className="overlay-btn" onClick={toggleMode}>
+                  Sign In
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default AuthSlider;

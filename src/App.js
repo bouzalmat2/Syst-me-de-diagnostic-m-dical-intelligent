@@ -6,8 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Landing & Auth
 import Landing from './pages/Landing/Landing';
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
+import AuthSlider from './pages/Auth/AuthSlider';
 
 // Patient Pages
 import PatientDashboard from './pages/Patient/PatientDashboard';
@@ -61,8 +60,8 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<AuthSlider />} />
+          <Route path="/register" element={<AuthSlider />} />
 
           {/* Patient Routes */}
           <Route
