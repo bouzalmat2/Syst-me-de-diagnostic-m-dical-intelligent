@@ -30,6 +30,7 @@ export const authAPI = {
   logout: () => api.post('/auth/logout'),
 };
 
+
 // Patient APIs
 export const patientAPI = {
   getAppointments: () => api.get('/patient/appointments'),
