@@ -31,7 +31,7 @@ const AuthSlider = () => {
 
   // Initialize blood cells
   useEffect(() => {
-    const cells = Array.from({ length: 30 }, (_, i) => ({
+    const cells = Array.from({ length: 60 }, (_, i) => ({
       id: i,
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
