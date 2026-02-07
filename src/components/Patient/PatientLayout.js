@@ -8,6 +8,7 @@ import {
   FaHistory,
   FaSignOutAlt,
   FaUserCircle,
+  FaHeartbeat,
 } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import FloatingChat from '../FloatingChat';
@@ -26,6 +27,7 @@ const PatientLayout = ({ children }) => {
   const navItems = [
     { path: '/patient/dashboard', icon: FaHome, label: 'Dashboard' },
     { path: '/patient/chatbot', icon: FaRobot, label: 'AI Assistant' },
+    { path: '/patient/disease-prediction', icon: FaHeartbeat, label: 'Disease Prediction' },
     { path: '/patient/appointments', icon: FaCalendarAlt, label: 'Appointments' },
     { path: '/patient/history', icon: FaHistory, label: 'History' },
   ];

@@ -14,6 +14,7 @@ import PatientDashboard from './pages/Patient/PatientDashboard';
 import PatientChatbot from './pages/Patient/PatientChatbot';
 import PatientAppointments from './pages/Patient/PatientAppointments';
 import PatientHistory from './pages/Patient/PatientHistory';
+import PatientDiseasePrediction from './pages/Patient/PatientDiseasePrediction';
 
 // Doctor Pages
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
@@ -77,6 +78,14 @@ function App() {
             element={
               <ProtectedRoute role="patient">
                 <PatientChatbot />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/patient/disease-prediction"
+            element={
+              <ProtectedRoute role="patient">
+                <PatientDiseasePrediction />
               </ProtectedRoute>
             }
           />
