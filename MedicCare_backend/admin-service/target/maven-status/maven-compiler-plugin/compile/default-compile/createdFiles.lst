@@ -1,0 +1,4 @@
+org\example\adminservice\AdminServiceApplication.class
+org\example\adminservice\client\PatientClient.class
+org\example\adminservice\client\DoctorClient.class
+org\example\adminservice\controller\AdminController.class

@@ -29,3 +29,10 @@ yarn-error.log*
 *.swp
 *.swo
 *~
+
+node_modules/
+__pycache__/
+*.pyc
+.env
+target/
+*.class

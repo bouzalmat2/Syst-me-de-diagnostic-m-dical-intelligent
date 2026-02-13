@@ -1,0 +1,6 @@
+org\example\doctorservice\proxy\AppointmentProxy.class
+org\example\doctorservice\entity\Doctor.class
+org\example\doctorservice\config\SecurityConfig.class
+org\example\doctorservice\controller\DoctorController.class
+org\example\doctorservice\DoctorServiceApplication.class
+org\example\doctorservice\repository\DoctorRepository.class

@@ -1,9 +1,20 @@
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import google.generativeai as genai
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 router = APIRouter()
+
+# Configure Gemini API with environment variable
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
+else:
+    print("WARNING: GEMINI_API_KEY not found in environment variables")
 
 # Input Schema
 class ChatRequest(BaseModel):
@@ -12,21 +23,20 @@ class ChatRequest(BaseModel):
     history: list = [] 
 
 @router.post("/message")
-async def chat_message(request: ChatRequest, x_api_key: str = Header(None)):
+async def chat_message(request: ChatRequest):
     """
     Medical Chatbot using Google Gemini.
-    Requires 'x-api-key' header.
+    Uses API key from environment variables.
     Optional: 'context' field for diagnosis info.
     """
-    if not x_api_key:
-        raise HTTPException(status_code=401, detail="Missing x-api-key header")
+    if not GEMINI_API_KEY:
+        raise HTTPException(status_code=500, detail="Gemini API key not configured")
 
     try:
-        # 1. Configure Gemini
-        genai.configure(api_key=x_api_key)
+        # 1. Gemini is already configured at startup
         
-        # 2. Set up the Model
-        model = genai.GenerativeModel('gemini-pro')
+        # 2. Set up the Model (using latest Gemini 2.5 Flash - fastest model as of 2026)
+        model = genai.GenerativeModel('gemini-2.5-flash')
         
         # 3. Construct Prompt with Context
         system_context = (

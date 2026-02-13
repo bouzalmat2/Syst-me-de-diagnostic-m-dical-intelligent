@@ -1,0 +1,8 @@
+org\example\authservice\service\JwtService.class
+org\example\authservice\controller\AuthController.class
+org\example\authservice\entity\User.class
+org\example\authservice\client\PatientClient.class
+org\example\authservice\AuthServiceApplication.class
+org\example\authservice\service\AuthService.class
+org\example\authservice\repository\UserRepository.class
+org\example\authservice\client\DoctorClient.class

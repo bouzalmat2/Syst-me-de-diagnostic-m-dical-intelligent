@@ -1,0 +1,8 @@
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\AuthServiceApplication.java
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\client\DoctorClient.java
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\client\PatientClient.java
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\controller\AuthController.java
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\entity\User.java
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\repository\UserRepository.java
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\service\AuthService.java
+C:\Users\mehdi\Desktop\medicCare\MedicCare_backend\auth-service\src\main\java\org\example\authservice\service\JwtService.java

@@ -1,0 +1,4 @@
+org\example\gatewayservice\config\AuthenticationFilter$Config.class
+org\example\gatewayservice\config\CorsConfig.class
+org\example\gatewayservice\GatewayServiceApplication.class
+org\example\gatewayservice\config\AuthenticationFilter.class
