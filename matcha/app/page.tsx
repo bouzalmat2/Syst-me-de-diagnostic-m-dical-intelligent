@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom';
-import DoctorNetworkCanvas from '../../components/Landing/DoctorNetworkCanvas';
-import SymptomAnalysisCanvas from '../../components/Landing/SymptomAnalysisCanvas';
-import LungAnalysisCanvas from '../../components/Landing/LungAnalysisCanvas';
-import StatisticsSection from '../../components/Landing/StatisticsSection';
-import CrosshairCursor from '../../components/Landing/CrosshairCursor';
+import DoctorNetworkCanvas from "@/components/DoctorNetworkCanvas";
+import SymptomAnalysisCanvas from "@/components/SymptomAnalysisCanvas";
+import LungAnalysisCanvas from "@/components/LungAnalysisCanvas";
+import StatisticsSection from "@/components/StatisticsSection";
+import CrosshairCursor from "@/components/CrosshairCursor";
 
-export default function Landing() {
+export default function Home() {
   return (
     <main className="relative bg-clinical-dark min-h-screen">
       <CrosshairCursor />
@@ -85,18 +84,12 @@ export default function Landing() {
           </p>
 
           <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              to="/register"
-              className="px-10 py-4 bg-clinical-primary text-[#EDD9CC] font-semibold text-[11px] sm:text-xs tracking-[0.2em] uppercase hover:bg-clinical-primary/90 transition-colors duration-300 rounded-sm"
-            >
+            <button className="px-10 py-4 bg-clinical-primary text-[#EDD9CC] font-semibold text-[11px] sm:text-xs tracking-[0.2em] uppercase hover:bg-clinical-primary/90 transition-colors duration-300 rounded-sm">
               Sign Up
-            </Link>
-            <Link
-              to="/login"
-              className="px-10 py-4 border border-clinical-primary/20 text-clinical-primary/70 font-semibold text-[11px] sm:text-xs tracking-[0.2em] uppercase hover:border-clinical-primary/40 hover:text-clinical-primary transition-all duration-300 rounded-sm"
-            >
+            </button>
+            <button className="px-10 py-4 border border-clinical-primary/20 text-clinical-primary/70 font-semibold text-[11px] sm:text-xs tracking-[0.2em] uppercase hover:border-clinical-primary/40 hover:text-clinical-primary transition-all duration-300 rounded-sm">
               Login
-            </Link>
+            </button>
           </div>
         </div>
       </section>

@@ -1,8 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-blue: #0066FF;
@@ -23,7 +21,6 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #E6F2FF 0%, #FFFFFF 100%);
   min-height: 100vh;
 }
 
@@ -31,23 +28,49 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Scrollbar Styling */
+/* ═══════════════════════════════════════
+   SCROLLBAR — Warm toned
+   ═══════════════════════════════════════ */
+
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--light-gray);
+  background: #e0ccbc;
+  border-left: 1px solid #d4bfad;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-blue);
-  border-radius: 5px;
+  background: rgba(139, 9, 9, 0.2);
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-blue);
+  background: rgba(139, 9, 9, 0.4);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 9, 9, 0.2) #e0ccbc;
+}
+
+/* ═══════════════════════════════════════
+   SELECTION
+   ═══════════════════════════════════════ */
+
+::selection {
+  background: rgba(139, 9, 9, 0.15);
+  color: #2a1010;
+}
+
+/* ═══════════════════════════════════════
+   SMOOTH SCROLLING
+   ═══════════════════════════════════════ */
+
+html {
+  scroll-behavior: auto;
 }
 
 /* Animation Keyframes */
