@@ -21,6 +21,12 @@ public class User {
 
     private String role;
 
+    @Column(nullable = false)
+    private String status = "ACTIVE"; // Default status
+
+    @Column(name = "suspension_end_date")
+    private String suspensionEndDate;
+
     // Constructors
     public User() {
     }
@@ -31,6 +37,17 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.status = "ACTIVE";
+    }
+
+    public User(Long id, String username, String email, String password, String role, String status, String suspensionEndDate) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.status = status;
+        this.suspensionEndDate = suspensionEndDate;
     }
 
     // Getters and Setters
@@ -72,5 +89,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSuspensionEndDate() {
+        return suspensionEndDate;
+    }
+
+    public void setSuspensionEndDate(String suspensionEndDate) {
+        this.suspensionEndDate = suspensionEndDate;
     }
 }

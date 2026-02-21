@@ -8,6 +8,9 @@ import java.util.Map;
 @FeignClient(name = "patient-service")
 public interface PatientClient {
     
+    @PostMapping("/api/patients")
+    Map<String, Object> createPatient(@RequestBody Map<String, Object> patientData);
+    
     @GetMapping("/api/patients/username/{username}")
     Map<String, Object> getPatientByUsername(@PathVariable String username);
     

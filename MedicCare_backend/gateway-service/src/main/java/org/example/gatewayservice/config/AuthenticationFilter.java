@@ -35,6 +35,11 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
+            // Skip authentication for public endpoints
+            String path = request.getURI().getPath();
+            if (path.contains("/auth/login") || path.contains("/auth/register") || path.contains("/auth/validate")) {
+                return chain.filter(exchange);
+            }
 
             if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 return onError(exchange, "Missing Authorization Header", HttpStatus.UNAUTHORIZED);

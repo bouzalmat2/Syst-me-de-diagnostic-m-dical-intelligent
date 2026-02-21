@@ -10,6 +10,7 @@ import {
   FaSignOutAlt,
   FaUserMd,
   FaUserCircle,
+  FaBell,
 } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import './DoctorLayout.css';
@@ -26,7 +27,7 @@ const DoctorLayout = ({ children }) => {
 
   const navItems = [
     { path: '/doctor/dashboard', icon: FaHome, label: 'Dashboard' },
-    { path: '/doctor/appointments', icon: FaCalendarCheck, label: 'Appointments' },
+    { path: '/doctor/appointments', icon: FaCalendarCheck, label: 'Appointments', badge: 5 },
     { path: '/doctor/patients', icon: FaUsers, label: 'Patients' },
     { path: '/doctor/messages', icon: FaComments, label: 'Messages' },
     { path: '/doctor/chatbot', icon: FaRobot, label: 'AI Assistant' },
@@ -35,57 +36,72 @@ const DoctorLayout = ({ children }) => {
 
   return (
     <div className="doctor-layout">
-      <header className="doctor-header">
-        <div className="header-left">
-          <div className="logo">
-            <div className="logo-icon-doctor">
+      <header className="doctor-header-new">
+        <div className="header-container">
+          <div className="header-brand">
+            <div className="brand-icon">
               <FaUserMd />
             </div>
-            <span className="logo-text">MedicCare Pro</span>
-          </div>
-        </div>
-        <div className="header-right">
-          <div className="user-info-doctor">
-            <FaUserMd className="user-icon" />
-            <div className="user-details">
-              <span className="user-name">Dr. {user?.name || 'Doctor'}</span>
-              <span className="user-role">Medical Professional</span>
+            <div className="brand-text">
+              <h1>MedicCare</h1>
+              <span>Professional</span>
             </div>
           </div>
-          <button className="logout-btn" onClick={handleLogout}>
-            <FaSignOutAlt />
-          </button>
-        </div>
-      </header>
 
-      <div className="doctor-content-wrapper">
-        <nav className="doctor-sidebar">
-          <ul className="nav-list">
+          <nav className="header-nav">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
-                <li key={item.path}>
-                  <Link to={item.path} className={`nav-item ${isActive ? 'active' : ''}`}>
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`header-nav-item ${isActive ? 'active' : ''}`}
+                >
+                  <motion.div
+                    whileHover={{ y: -2 }}
+                    className="nav-item-wrapper"
+                  >
+                    <item.icon className="nav-item-icon" />
+                    <span>{item.label}</span>
+                    {item.badge && (
+                      <span className="nav-badge">{item.badge}</span>
+                    )}
+                  </motion.div>
+                  {isActive && (
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="nav-item-content"
-                    >
-                      <item.icon className="nav-icon" />
-                      <span className="nav-label">{item.label}</span>
-                      {item.path === '/doctor/appointments' && (
-                        <span className="notification-badge">5</span>
-                      )}
-                    </motion.div>
-                  </Link>
-                </li>
+                      layoutId="doctor-underline"
+                      className="nav-underline"
+                      initial={false}
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
               );
             })}
-          </ul>
-        </nav>
+          </nav>
 
-        <main className="doctor-main">{children}</main>
-      </div>
+          <div className="header-actions">
+            <button className="notification-btn" title="Notifications">
+              <FaBell />
+              <span className="notification-dot"></span>
+            </button>
+            <div className="header-user">
+              <div className="user-avatar">
+                <FaUserMd />
+              </div>
+              <div className="user-meta">
+                <span className="user-greeting">Dr. {user?.name || 'Doctor'}</span>
+                <span className="user-subtitle">Medical Professional</span>
+              </div>
+            </div>
+            <button className="logout-button" onClick={handleLogout} title="Logout">
+              <FaSignOutAlt />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="doctor-main-content">{children}</main>
     </div>
   );
 };

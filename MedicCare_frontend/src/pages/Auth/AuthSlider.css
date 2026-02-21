@@ -170,7 +170,7 @@
 
 .form-subtitle {
   color: #718096;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   font-size: 15px;
 }
 
@@ -244,21 +244,24 @@
 .role-label {
   font-weight: 600;
   color: #2D3748;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-size: 14px;
 }
 
 .roles-grid {
+  height: 40px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
 .role-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 12px;
+  height: 55px;
   padding: 16px 8px;
   border: 2px solid #E2E8F0;
   border-radius: 12px;

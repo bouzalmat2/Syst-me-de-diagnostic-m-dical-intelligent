@@ -15,6 +15,7 @@ import PatientAppointments from './pages/Patient/PatientAppointments';
 import PatientHistory from './pages/Patient/PatientHistory';
 import PatientDiseasePrediction from './pages/Patient/PatientDiseasePrediction';
 import PatientProfile from './pages/Patient/PatientProfile';
+import PatientMessages from './pages/Patient/PatientMessages';
 
 // Doctor Pages
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
@@ -29,6 +30,7 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminUsers from './pages/Admin/AdminUsers';
 import AdminStatistics from './pages/Admin/AdminStatistics';
 import AdminProfile from './pages/Admin/AdminProfile';
+import AdminDoctorApproval from './pages/Admin/AdminDoctorApproval';
 
 function App() {
   return (
@@ -108,6 +110,14 @@ function App() {
             }
           />
           <Route
+            path="/patient/messages"
+            element={
+              <ProtectedRoute role="patient">
+                <PatientMessages />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/patient/profile"
             element={
               <ProtectedRoute role="patient">
@@ -180,6 +190,14 @@ function App() {
             element={
               <ProtectedRoute role="admin">
                 <AdminUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/doctor-approvals"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminDoctorApproval />
               </ProtectedRoute>
             }
           />

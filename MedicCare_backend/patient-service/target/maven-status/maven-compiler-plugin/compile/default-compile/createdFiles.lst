@@ -2,11 +2,14 @@ org\example\patientservice\config\SecurityConfig.class
 org\example\patientservice\controller\PatientController.class
 org\example\patientservice\dto\PatientDashboardStats.class
 org\example\patientservice\repository\MedicalRecordRepository.class
+org\example\patientservice\controller\MessageController.class
 org\example\patientservice\PatientServiceApplication.class
 org\example\patientservice\repository\AppointmentRepository.class
 org\example\patientservice\repository\PatientRepository.class
 org\example\patientservice\entity\ClinicalNote.class
 org\example\patientservice\controller\AppointmentController.class
+org\example\patientservice\repository\MessageRepository.class
+org\example\patientservice\entity\Message.class
 org\example\patientservice\repository\ClinicalNoteRepository.class
 org\example\patientservice\entity\Appointment.class
 org\example\patientservice\entity\Patient.class

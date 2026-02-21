@@ -9,6 +9,8 @@ import {
   FaSignOutAlt,
   FaUserCircle,
   FaHeartbeat,
+  FaBell,
+  FaComments,
 } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import FloatingChat from '../FloatingChat';
@@ -27,66 +29,84 @@ const PatientLayout = ({ children }) => {
   const navItems = [
     { path: '/patient/dashboard', icon: FaHome, label: 'Dashboard' },
     { path: '/patient/chatbot', icon: FaRobot, label: 'AI Assistant' },
-    { path: '/patient/disease-prediction', icon: FaHeartbeat, label: 'Disease Prediction' },
+    { path: '/patient/disease-prediction', icon: FaHeartbeat, label: 'Health Check' },
     { path: '/patient/appointments', icon: FaCalendarAlt, label: 'Appointments' },
+    { path: '/patient/messages', icon: FaComments, label: 'Messages' },
     { path: '/patient/history', icon: FaHistory, label: 'History' },
     { path: '/patient/profile', icon: FaUserCircle, label: 'Profile' },
   ];
 
   const handleSendMessage = (message) => {
     console.log('Sending message:', message);
-    // Implement actual message sending logic
   };
 
   return (
     <div className="patient-layout">
-      <header className="patient-header">
-        <div className="header-left">
-          <div className="logo">
-            <div className="logo-icon">
-              <span className="pulse-circle"></span>
-              <span className="pulse-circle delay-1"></span>
-              <span className="pulse-circle delay-2"></span>
+      <header className="patient-header-new">
+        <div className="header-container">
+          <div className="header-brand">
+            <div className="brand-icon-patient">
+              <div className="heartbeat-icon">
+                <FaHeartbeat />
+              </div>
             </div>
-            <span className="logo-text">MedicCare</span>
+            <div className="brand-text">
+              <h1>MedicCare</h1>
+              <span>Health Portal</span>
+            </div>
           </div>
-        </div>
-        <div className="header-right">
-          <div className="user-info">
-            <FaUserCircle className="user-icon" />
-            <span className="user-name">{user?.name || 'Patient'}</span>
-          </div>
-          <button className="logout-btn" onClick={handleLogout}>
-            <FaSignOutAlt />
-          </button>
-        </div>
-      </header>
 
-      <div className="patient-content-wrapper">
-        <nav className="patient-sidebar">
-          <ul className="nav-list">
+          <nav className="header-nav">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
-                <li key={item.path}>
-                  <Link to={item.path} className={`nav-item ${isActive ? 'active' : ''}`}>
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`header-nav-item ${isActive ? 'active' : ''}`}
+                >
+                  <motion.div
+                    whileHover={{ y: -2 }}
+                    className="nav-item-wrapper"
+                  >
+                    <item.icon className="nav-item-icon" />
+                    <span>{item.label}</span>
+                  </motion.div>
+                  {isActive && (
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="nav-item-content"
-                    >
-                      <item.icon className="nav-icon" />
-                      <span className="nav-label">{item.label}</span>
-                    </motion.div>
-                  </Link>
-                </li>
+                      layoutId="patient-underline"
+                      className="nav-underline"
+                      initial={false}
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
               );
             })}
-          </ul>
-        </nav>
+          </nav>
 
-        <main className="patient-main">{children}</main>
-      </div>
+          <div className="header-actions">
+            <button className="notification-btn" title="Notifications">
+              <FaBell />
+              <span className="notification-dot"></span>
+            </button>
+            <div className="header-user">
+              <div className="user-avatar-patient">
+                <FaUserCircle />
+              </div>
+              <div className="user-meta">
+                <span className="user-greeting">{user?.name || 'Patient'}</span>
+                <span className="user-subtitle">Patient Portal</span>
+              </div>
+            </div>
+            <button className="logout-button" onClick={handleLogout} title="Logout">
+              <FaSignOutAlt />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="patient-main-content">{children}</main>
 
       <FloatingChat userRole="patient" onSendMessage={handleSendMessage} />
     </div>

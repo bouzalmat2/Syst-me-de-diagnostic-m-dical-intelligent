@@ -53,4 +53,14 @@ public class PatientController {
     public ResponseEntity<Patient> updatePatientByUsername(@PathVariable String username, @RequestBody Patient patient) {
         return ResponseEntity.ok(patientService.createOrUpdateProfile(username, patient));
     }
+    
+    // Create patient record during registration (auto-called by auth-service)
+    @PostMapping
+    public ResponseEntity<Patient> createPatient(@RequestBody java.util.Map<String, Object> patientData) {
+        String username = (String) patientData.get("username");
+        Patient patient = new Patient();
+        patient.setUsername(username);
+        // Other fields remain null until user updates profile
+        return ResponseEntity.ok(patientService.createOrUpdateProfile(username, patient));
+    }
 }

@@ -8,6 +8,7 @@ import {
   FaSignOutAlt,
   FaShieldAlt,
   FaUserCircle,
+  FaUserMd,
 } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import './AdminLayout.css';
@@ -25,6 +26,7 @@ const AdminLayout = ({ children }) => {
   const navItems = [
     { path: '/admin/dashboard', icon: FaHome, label: 'Dashboard' },
     { path: '/admin/users', icon: FaUsers, label: 'User Management' },
+    { path: '/admin/doctor-approvals', icon: FaUserMd, label: 'Doctor Approvals' },
     { path: '/admin/statistics', icon: FaChartBar, label: 'Statistics' },
     { path: '/admin/profile', icon: FaUserCircle, label: 'Profile' },
   ];

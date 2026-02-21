@@ -94,6 +94,23 @@ INSERT INTO `doctors` (`id`, `email`, `first_name`, `last_name`, `phone_number`,
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `sender_username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `receiver_username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_read` bit(1) DEFAULT b'0',
+  `sent_at` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `medical_records`
 --
 
@@ -150,6 +167,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('PENDING','ACTIVE','SUSPENDED') COLLATE utf8mb4_unicode_ci DEFAULT 'ACTIVE',
+  `suspension_end_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK6dotkott2kjsp8vw4d0m25fb7` (`email`),
   UNIQUE KEY `UKr43af9ap4edm43mmtq01oddj6` (`username`)
@@ -159,9 +178,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `username`, `role`) VALUES
-(1, 'karima@test.com', '$2a$10$Oebj84iosGsuDeX6.Yq/J.6LHaCG.h3R20jr1qHwq1X2sNCTBIcky', 'karima', 'DOCTOR'),
-(2, 'wassim@gmail.com', '$2a$10$4CL13Be89391sHHV8KQe4.mTZBakjqdqGwenUOD6Afd5U585mu14G', 'wassim', 'Patient');
+INSERT INTO `users` (`id`, `email`, `password`, `username`, `role`, `status`) VALUES
+(1, 'karima@test.com', '$2a$10$Oebj84iosGsuDeX6.Yq/J.6LHaCG.h3R20jr1qHwq1X2sNCTBIcky', 'karima', 'DOCTOR', 'ACTIVE'),
+(2, 'wassim@gmail.com', '$2a$10$4CL13Be89391sHHV8KQe4.mTZBakjqdqGwenUOD6Afd5U585mu14G', 'wassim', 'PATIENT', 'ACTIVE');
 
 --
 -- Contraintes pour les tables déchargées

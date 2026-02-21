@@ -11,6 +11,8 @@ spring:
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
+          filters:
+            - name: AuthenticationFilter
 
         - id: doctor-service
           uri: lb://DOCTOR-SERVICE
@@ -23,6 +25,13 @@ spring:
           uri: lb://PATIENT-SERVICE
           predicates:
             - Path=/api/appointments/**, /api/patients/**
+          filters:
+            - name: AuthenticationFilter
+
+        - id: message-service
+          uri: lb://PATIENT-SERVICE
+          predicates:
+            - Path=/api/messages/**
           filters:
             - name: AuthenticationFilter
 

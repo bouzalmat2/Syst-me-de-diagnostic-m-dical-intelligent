@@ -165,15 +165,41 @@ const AuthSlider = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const userRole = data.role ? data.role.toLowerCase() : registerData.role;
-        login({
-          username: data.username,
-          email: data.email,
-          name: data.username,
-          role: userRole,
+        
+        // If doctor, show pending message and redirect to login
+        if (data.status === 'PENDING' || (data.role && data.role.toLowerCase() === 'doctor')) {
+          toast.success('Registration successful! Your account is pending admin approval. Please wait for approval before logging in.', { duration: 6000 });
+          setIsLoginMode(true);
+          return;
+        }
+        
+        // Auto-login after registration to get a valid JWT token
+        const loginResponse = await fetch('http://localhost:8888/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: registerData.name,
+            password: registerData.password
+          })
         });
-        toast.success('Registration successful! Please login.');
-        setIsLoginMode(true);
+
+        if (loginResponse.ok) {
+          const loginResult = await loginResponse.json();
+          const userRole = loginResult.role ? loginResult.role.toLowerCase() : registerData.role;
+          login({
+            username: loginResult.username,
+            email: data.email,
+            name: loginResult.username,
+            role: userRole,
+            token: loginResult.token
+          });
+          localStorage.setItem('token', loginResult.token);
+          toast.success('Registration successful!');
+          navigate(`/${userRole}/dashboard`);
+        } else {
+          toast.success('Registration successful! Please log in.');
+          setIsLoginMode(true);
+        }
       } else {
         const errorData = await response.json();
         toast.error(errorData.error || 'Registration failed');

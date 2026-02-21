@@ -46,6 +46,7 @@ export const patientAPI = {
 // Doctor APIs
 export const doctorAPI = {
   getAllDoctors: () => api.get('/doctors/all'),
+  getActiveDoctors: () => api.get('/doctors/active'),
   getAppointments: (doctorName) => api.get(`/doctors/appointments/${doctorName}`),
   updateAppointmentStatus: (id, status) => api.put(`/doctors/appointments/${id}/status?status=${status}`),
   getStats: (doctorName) => api.get(`/api/appointments/doctor/${doctorName}/stats`),
@@ -58,6 +59,10 @@ export const adminAPI = {
   getStats: () => api.get('/api/admin/stats'),
   getUsers: () => api.get('/auth/users'),
   deleteUser: (id) => api.delete(`/auth/users/${id}`),
+  updateUser: (id, data) => api.put(`/auth/users/${id}`, data),
+  suspendUser: (id, endDate) => api.put(`/auth/users/${id}/suspend`, { endDate: endDate || null }),
+  unsuspendUser: (id) => api.put(`/auth/users/${id}/unsuspend`, {}),
+  approveDoctor: (id) => api.put(`/auth/users/${id}/approve`, {}),
 };
 
 export const profileAPI = {
@@ -75,6 +80,15 @@ export const aiAPI = {
   scanCancer: (formData) => axios.post(`${AI_API_URL}/cancer/scan`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
+};
+
+// Message APIs
+export const messageAPI = {
+  getConversations: () => api.get('/api/messages/conversations'),
+  getHistory: (otherUsername) => api.get(`/api/messages/history/${otherUsername}`),
+  sendMessage: (receiverUsername, content) => api.post('/api/messages/send', { receiverUsername, content }),
+  markAsRead: (otherUsername) => api.put(`/api/messages/read/${otherUsername}`),
+  startConversation: (receiverUsername, content) => api.post('/api/messages/start', { receiverUsername, content }),
 };
 
 export default api;

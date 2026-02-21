@@ -3,10 +3,13 @@ package org.example.doctorservice.controller;
 import org.example.doctorservice.entity.Doctor;
 import org.example.doctorservice.repository.DoctorRepository;
 import org.example.doctorservice.proxy.AppointmentProxy;
+import org.example.doctorservice.proxy.UserProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/doctors")
@@ -14,16 +17,43 @@ public class DoctorController {
 
     private final DoctorRepository doctorRepository;
     private final AppointmentProxy appointmentProxy;
+    private final UserProxy userProxy;
 
 
-    public DoctorController(DoctorRepository doctorRepository, AppointmentProxy appointmentProxy) {
+    public DoctorController(DoctorRepository doctorRepository, AppointmentProxy appointmentProxy, UserProxy userProxy) {
         this.doctorRepository = doctorRepository;
         this.appointmentProxy = appointmentProxy;
+        this.userProxy = userProxy;
     }
 
     @GetMapping("/all")
     public List<Doctor> getAllDoctors() {
-        return doctorRepository.findAll();
+        // Return only active doctors (exclude PENDING and SUSPENDED)
+        try {
+            // Fetch all users from auth-service
+            List<Map<String, Object>> users = userProxy.getAllUsers();
+            
+            // Get usernames of active doctors
+            List<String> activeDoctorUsernames = users.stream()
+                .filter(user -> "DOCTOR".equalsIgnoreCase((String) user.get("role")))
+                .filter(user -> "ACTIVE".equalsIgnoreCase((String) user.get("status")))
+                .map(user -> (String) user.get("username"))
+                .collect(Collectors.toList());
+            
+            // Filter doctors by active usernames
+            return doctorRepository.findAll().stream()
+                .filter(doctor -> activeDoctorUsernames.contains(doctor.getUsername()))
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            // If auth-service is unreachable, return empty list for safety
+            return List.of();
+        }
+    }
+    
+    // Alias for getAllDoctors - returns only active doctors
+    @GetMapping("/active")
+    public List<Doctor> getActiveDoctors() {
+        return getAllDoctors();
     }
 
     @PostMapping("/add")
@@ -102,5 +132,15 @@ public class DoctorController {
                     newDoctor.setPhoneNumber(doctorData.getPhoneNumber());
                     return ResponseEntity.ok(doctorRepository.save(newDoctor));
                 });
+    }
+    
+    // Create doctor record during registration (auto-called by auth-service)
+    @PostMapping
+    public ResponseEntity<Doctor> createDoctor(@RequestBody java.util.Map<String, Object> doctorData) {
+        Doctor doctor = new Doctor();
+        doctor.setUsername((String) doctorData.get("username"));
+        doctor.setEmail((String) doctorData.get("email"));
+        // Other fields remain null until user updates profile
+        return ResponseEntity.ok(doctorRepository.save(doctor));
     }
 }

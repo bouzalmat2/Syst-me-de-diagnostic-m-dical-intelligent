@@ -26,6 +26,14 @@ const PatientAppointments = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Helper to resolve doctor username to display name
+  const getDoctorDisplayName = (doctorUsername) => {
+    const doc = doctors.find(d => d.username === doctorUsername);
+    if (doc && doc.firstName && doc.lastName) return `Dr. ${doc.firstName} ${doc.lastName}`;
+    if (doc && doc.firstName) return `Dr. ${doc.firstName}`;
+    return doctorUsername;
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -34,7 +42,7 @@ const PatientAppointments = () => {
     try {
       const [aptsRes, docsRes] = await Promise.all([
         patientAPI.getAppointments().catch(() => ({ data: [] })),
-        doctorAPI.getAllDoctors().catch(() => ({ data: [] })),
+        doctorAPI.getActiveDoctors().catch(() => ({ data: [] })),
       ]);
       setAppointments(aptsRes.data || []);
       setDoctors(docsRes.data || []);
@@ -48,7 +56,9 @@ const PatientAppointments = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const selectedDoctor = doctors.find(d => d.username === formData.doctor);
       await patientAPI.bookAppointment({
+        doctorId: selectedDoctor?.id || null,
         doctorName: formData.doctor,
         appointmentDate: formData.date,
         appointmentTime: formData.time,
@@ -123,7 +133,7 @@ const PatientAppointments = () => {
                   >
                     <option value="">Choose a doctor...</option>
                     {doctors.map((doc) => (
-                      <option key={doc.id} value={`${doc.firstName} ${doc.lastName}`}>
+                      <option key={doc.id} value={doc.username}>
                         {doc.firstName} {doc.lastName} - {doc.specialty}
                       </option>
                     ))}
@@ -196,7 +206,7 @@ const PatientAppointments = () => {
                 <div className="doctor-info">
                   <FaUserMd className="doctor-icon" />
                   <div>
-                    <h3>{appointment.doctorName}</h3>
+                    <h3>{getDoctorDisplayName(appointment.doctorName)}</h3>
                     <p className="specialty">{appointment.reason}</p>
                   </div>
                 </div>

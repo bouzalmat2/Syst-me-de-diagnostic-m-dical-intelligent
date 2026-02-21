@@ -19,6 +19,7 @@ public class Appointment {
     @JoinColumn(name = "patient_id")
     private Patient patient; 
 
+    private Long doctorId;
     private String doctorName; 
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
